@@ -6,22 +6,6 @@ module "eks" {
   cluster_version                = var.cluster_version
   cluster_endpoint_public_access = true
 
-  cluster_addons = {
-    vpc-cni = {
-      before_compute = true
-      most_recent    = true
-      configuration_values = jsonencode({
-        env = {
-          ENABLE_POD_ENI                    = "true"
-          ENABLE_PREFIX_DELEGATION          = "true"
-          POD_SECURITY_GROUP_ENFORCING_MODE = "standard"
-        }
-
-        enableNetworkPolicy = "true"
-      })
-    }
-  }
-
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
@@ -51,4 +35,9 @@ module "eks" {
   tags = merge(local.tags, {
     "karpenter.sh/discovery" = var.cluster_name
   })
+}
+
+output "configure_kubectl" {
+  description = "Configure kubectl: make sure you're logged in with the correct AWS profile and run the following command to update your kubeconfig"
+  value       = "aws eks update-kubeconfig --name ${var.cluster_name}"
 }

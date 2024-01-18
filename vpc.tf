@@ -2,6 +2,7 @@ locals {
   private_subnets = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 3, k + 3)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(var.vpc_cidr, 3, k)]
   azs             = slice(data.aws_availability_zones.available.names, 0, 3)
+  pod_subnets = [for k, v in local.azs : cidrsubnet(element(var.vpc_secondary_cidr, 0), 3, k)]
 }
 
 data "aws_availability_zones" "available" {
@@ -14,6 +15,8 @@ module "vpc" {
 
   name = var.cluster_name
   cidr = var.vpc_cidr
+  
+  secondary_cidr_blocks = var.vpc_secondary_cidr
 
   azs                   = local.azs
   public_subnets        = local.public_subnets
@@ -43,3 +46,31 @@ module "vpc" {
 
   tags = local.tags
 }
+
+resource "aws_subnet" "in_secondary_cidr_pod_0" {
+  vpc_id = module.vpc.vpc_id
+  cidr_block = element(local.pod_subnets,0)
+  availability_zone = element(local.azs,0)
+  tags = merge(local.tags, {
+    "Name" = "pod_network_1"
+  })
+}
+
+resource "aws_subnet" "in_secondary_cidr_pod_1" {
+  vpc_id = module.vpc.vpc_id
+  cidr_block = element(local.pod_subnets,1)
+  availability_zone = element(local.azs,1)
+  tags = merge(local.tags, {
+    "Name" = "pod_network_2"
+  })
+}
+
+resource "aws_subnet" "in_secondary_cidr_pod_2" {
+  vpc_id = module.vpc.vpc_id
+  cidr_block = element(local.pod_subnets,2)
+  availability_zone = element(local.azs,2)
+  tags = merge(local.tags, {
+    "Name" = "pod_network_3"
+  })
+}
+

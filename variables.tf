@@ -20,3 +20,9 @@ variable "vpc_cidr" {
   type        = string
   default     = "172.20.0.0/16"
 }
+
+variable "vpc_secondary_cidr" {
+  description = "Defines the CIDR block used on Amazon VPC created for Amazon EKS."
+  type        = list(string)
+  default     = ["100.64.0.0/16"]
+}

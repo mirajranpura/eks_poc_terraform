@@ -3,6 +3,8 @@
 *.tfstate.backup
 *.tfstate.lock.info
 
+# Disabling state
+.terraform.lock.hcl
 # logs
 *.log
 
