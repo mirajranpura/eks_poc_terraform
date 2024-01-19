@@ -1,0 +1,104 @@
+# Replace nodegroupname with desired group name. 
+
+# Prepare the node role
+resource "aws_iam_role" "nodegroupname" {
+  name = "terraform-eks-nodegroupname"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+}
+
+# Policy attachment 
+
+resource "aws_iam_role_policy_attachment" "nodegroupname-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.nodegroupname.name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroupname-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.nodegroupname.name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroupname-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.nodegroupname.name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroupname-AmazonSSMManagedInstanceCore" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.nodegroupname.name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroupname-AmazonSSMPatchAssociation" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMPatchAssociation"
+  role       = aws_iam_role.nodegroupname.name
+}
+
+# Managed node group configuration 
+
+resource "aws_eks_node_group" "nodegroupname" {
+  cluster_name    = var.cluster_name
+  node_group_name = "nodegroupname"
+  node_role_arn   = aws_iam_role.nodegroupname.arn
+  subnet_ids      = module.vpc.private_subnets
+
+  scaling_config {
+    desired_size = 1
+    max_size     = 1
+    min_size     = 1
+  }
+
+  # Allow external changes without Terraform plan difference
+  lifecycle {
+    ignore_changes = [scaling_config[0].desired_size]
+  }
+  
+  # Instance Size & Type
+  capacity_type  = "ON_DEMAND"
+  instance_types = ["m5.large"]
+
+  # K8s specs
+  labels = { 
+   "application" = "frontend" 
+   }
+#  taint = [
+#        {
+#          key    = "dedicated-no-execute"
+#          value  = "true"
+#          effect = "NO_EXECUTE"
+#        }
+#      ] 
+#  
+#  taint = [
+#        {
+#          key    = "dedicated-no-schedule"
+#          value  = "true"
+#          effect = "NO_SCHEDULE"
+#        }
+#      ] 
+  
+  tags = merge(local.tags, {
+    "karpenter.sh/discovery" = var.cluster_name
+    "k8s.io/cluster-autoscaler/enabled" = "true"
+    "k8s.io/cluster-autoscaler/${var.cluster_name}" = 1
+  })
+
+  depends_on = [
+    aws_iam_role_policy_attachment.nodegroupname-AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.nodegroupname-AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.nodegroupname-AmazonEC2ContainerRegistryReadOnly,
+  ]
+}
