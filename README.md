@@ -39,6 +39,12 @@ This is a poc for EKS cluster blueprints.
 ```
 5. Apply EKS blueprint add-on configurations
 ```
+   # Update kubeconfig to points to newly created cluster.
+   aws eks update-kubeconfig --name < Name of the Cluster >
+
+   # Export the variable for K8s terraform module 
+   export KUBE_CONFIG_PATH=~/.kube/config
+
    # Copy template file and adjust the parameters if required
    cp eks_addons.tf_template eks_addons.tf;
    terraform init; # Installs the eks_blueprint module
