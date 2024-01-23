@@ -8,7 +8,7 @@ This is a poc for EKS cluster blueprints.
 
 * eks_addons.tf_template : Example how to boostrap EKS Clusters [AWS blog](https://aws.amazon.com/blogs/containers/bootstrapping-clusters-with-eks-blueprints/)
 
-* eks_node_group.tf_template: Provides a template to create managed node group using terraform [terraform repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group)
+* eks_node_group.tf_template: Provides a template to create managed node group using terraform [repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group)
 
 ## Pre-requisites [Amazon Linux OS]
 
@@ -51,6 +51,8 @@ This is a poc for EKS cluster blueprints.
    terraform plan;
    terraform apply;
 ```
+Ref: [EKS Blueprints](https://aws.amazon.com/blogs/containers/bootstrapping-clusters-with-eks-blueprints/)
+
 6. Create more node groups 
 ```
    # Copy template with new filename and Adjust the parameters if required eg labels, taints configs
