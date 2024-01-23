@@ -12,11 +12,15 @@ This is a poc for EKS cluster blueprints.
 
 ## Pre-requisites [Amazon Linux OS]
 
-1. Terrform utilities
+1. Preparing your CLI console
 ```
    sudo yum install -y yum-utils;
    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
    sudo yum -y install terraform
+   sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+   sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+   sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+   kubectx
 ```
 
 ## Quick Setup 
