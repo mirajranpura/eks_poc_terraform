@@ -10,7 +10,7 @@ This is a poc for EKS cluster blueprints.
 
 * eks_node_group.tf_template: Provides a template to create managed node group using terraform [repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group)
 
-## Pre-requisites [Amazon Linux OS]
+## Pre-requisites 
 
 1. Preparing your CLI console
 ```
@@ -20,7 +20,8 @@ This is a poc for EKS cluster blueprints.
    sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
    sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
    sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
-   kubectx
+   kubectx  # To switch between K8s clusters
+   kubens   # To show selected namespace for K8s context 
 ```
 
 ## Quick Setup 
