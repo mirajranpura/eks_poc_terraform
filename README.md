@@ -41,6 +41,7 @@ This is a poc for EKS cluster blueprints.
 ```
    # Copy template file and adjust the parameters if required
    cp eks_addons.tf_template eks_addons.tf;
+   terraform init; # Installs the eks_blueprint module
    terraform plan;
    terraform apply;
 ```
