@@ -53,9 +53,15 @@ This is a poc for EKS cluster blueprints.
 ```
 6. Create more node groups 
 ```
-   # Copy template file and adjust the parameters if required eg labels, taints configs
-   cp eks_node_group.tf_template eks_node_group.tf;
+   # Copy template with new filename and Adjust the parameters if required eg labels, taints configs
+   cp eks_node_group.tf_template web_app_node_group.tf;
+
+   # Replace the nodegroupname with your choice. 
+   sed -i 's/nodegroupname/web_app_nodes/g' web_app_node_group.tf
    terraform plan;
    terraform apply;
-```   
+
+# Feel free to add more nodegroups by repeating the step 6. 
+```
+
    
