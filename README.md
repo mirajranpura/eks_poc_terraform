@@ -11,8 +11,9 @@ This is a poc for EKS cluster blueprints.
 * eks_node_group.tf_template: Provides a template to create managed node group using terraform [repo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group)
 
 ## Pre-requisites 
+( Note: Amazon linux 2 was used for the steps here )
 
-1. Preparing your CLI console
+1. terraform command line 
 ```
    sudo yum install -y yum-utils;
    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
@@ -23,8 +24,23 @@ This is a poc for EKS cluster blueprints.
    kubectx  # To switch between K8s clusters
    kubens   # To show selected namespace for K8s context 
 ```
+2. AWS CLI
+```
+   # Check if AWS CLI installed
+   aws --version
+   env | grep REG
+
+   # Export environment variable if not already 
+   export AWS_DEFAULT_REGION=us-west-2
+   export AWS_REGION=us-west-2
+
+   # Verify AWS credentials to deploy VPC, EKS, IAM and other resources 
+    aws sts get-caller-identity
+```
+[AWS CLI Installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 ## Quick Setup 
+
 1. Clone the repo
 ```
    git clone https://github.com/mirajranpura/eks_poc_terraform.git
