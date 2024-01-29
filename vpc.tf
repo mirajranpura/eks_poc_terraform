@@ -47,30 +47,30 @@ module "vpc" {
   tags = local.tags
 }
 
-resource "aws_subnet" "in_secondary_cidr_pod_0" {
-  vpc_id = module.vpc.vpc_id
-  cidr_block = element(local.pod_subnets,0)
-  availability_zone = element(local.azs,0)
-  tags = merge(local.tags, {
-    "Name" = "pod_network_1"
-  })
-}
+#resource "aws_subnet" "in_secondary_cidr_pod_0" {
+#  vpc_id = module.vpc.vpc_id
+#  cidr_block = element(local.pod_subnets,0)
+#  availability_zone = element(local.azs,0)
+#  tags = merge(local.tags, {
+#    "Name" = "pod_network_1"
+#  })
+#}
 
-resource "aws_subnet" "in_secondary_cidr_pod_1" {
-  vpc_id = module.vpc.vpc_id
-  cidr_block = element(local.pod_subnets,1)
-  availability_zone = element(local.azs,1)
-  tags = merge(local.tags, {
-    "Name" = "pod_network_2"
-  })
-}
+#resource "aws_subnet" "in_secondary_cidr_pod_1" {
+#  vpc_id = module.vpc.vpc_id
+#  cidr_block = element(local.pod_subnets,1)
+#  availability_zone = element(local.azs,1)
+#  tags = merge(local.tags, {
+#    "Name" = "pod_network_2"
+#  })
+#}
 
-resource "aws_subnet" "in_secondary_cidr_pod_2" {
-  vpc_id = module.vpc.vpc_id
-  cidr_block = element(local.pod_subnets,2)
-  availability_zone = element(local.azs,2)
-  tags = merge(local.tags, {
-    "Name" = "pod_network_3"
-  })
-}
+#resource "aws_subnet" "in_secondary_cidr_pod_2" {
+#  vpc_id = module.vpc.vpc_id
+#  cidr_block = element(local.pod_subnets,2)
+#  availability_zone = element(local.azs,2)
+#  tags = merge(local.tags, {
+#    "Name" = "pod_network_3"
+#  })
+#}
 
